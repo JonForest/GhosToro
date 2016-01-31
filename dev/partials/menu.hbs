@@ -4,7 +4,9 @@
             <li><a href="/">Home</a></li>
         {{/is}}
         <li><a href="/about-me">About me</a></li>
-        <li><a href="/portfolio">Portfolio</a></li>
+        {{#is "home"}}
+          <li><a href="#content">Posts</a></li>
+        {{/is}}
         <li><a href="/contacts">Contacts</a></li>
     </ul>
 </nav>
