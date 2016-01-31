@@ -7,6 +7,11 @@
     "use strict";
 
     $(document).ready(function(){
+
+      $(".menu-button, .nav-cover, .nav-close").on("click", function(e){
+            e.preventDefault();
+            $("body").toggleClass("nav-opened nav-closed");
+        });
         // Push down the blog at the beginning.
     	var home = $('.home-template');
     	var centered = $('.v-center');

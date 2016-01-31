@@ -1,83 +1,100 @@
 {{!< default}}
 
-<main class="content" role="main">
+{{! The comment above "< default" means - insert everything in this file into
+    the {body} of the default.hbs template, which contains our header/footer. }}
 
+{{! Everything inside the #post tags pulls data from the post }}
+{{#post}}
+
+
+<header class="main-header post-head {{#if image}}" style="background-image: url({{image}}){{else}}no-cover{{/if}}">
+    <nav class="main-nav {{#if image}}overlay{{/if}} clearfix">
+        {{#if @blog.logo}}<a class="blog-logo" href="{{@blog.url}}"><img src="{{@blog.logo}}" alt="{{@blog.title}}" /></a>{{/if}}
+        {{#if @blog.navigation}}
+            <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
+        {{/if}}
+    </nav>
+</header>
+
+<main class="content" role="main">
     <article class="{{post_class}}">
 
-        {{#post}}
-
-        <header>
-        <h1 class="post-title">{{{title}}}</h1>
-        <div class="post-meta"><time datetime="{{date format='DD-MM-YYYY'}}">{{date format="dddd, DD MMMM YYYY"}}</time></div>
-        {{#if tags}}<div class="post-meta tags">Posted in: {{tags}}</div>{{/if}}
+        <header class="post-header">
+            <h1 class="post-title">{{title}}</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="{{date format='YYYY-MM-DD'}}">{{date format="DD MMMM YYYY"}}</time> {{tags prefix=" on "}}
+            </section>
         </header>
 
         <section class="post-content">
             {{content}}
         </section>
 
-        <section class="share">
-            <p class="info prompt">Share this post</p>
-            <a href="http://twitter.com/share?text={{title}}&url={{url absolute="true"}}"
-                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-                <span class="ion-social-twitter"></span>
-            </a>
-            <a href="https://www.facebook.com/sharer/sharer.php?u={{url absolute="true"}}"
-                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-                <span class="ion-social-facebook"></span>
-            </a>
-            <a href="https://plus.google.com/share?url={{url absolute="true"}}"
-               onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-                <span class="ion-social-googleplus"></span>
-            </a>
-        </section>
-
         <footer class="post-footer">
 
-            {{#if author}}
-            <section class="author">
-                <div class="authorimage" style="background: url({{author.image}})"></div>
-                <p class="attr">Author:</p>
-                <h4><a href="{{author.website}}">{{author.name}}</a></h4>
-                <p class="bio">{{author.bio}}</p>
-            </section>
+        {{! Everything inside the #author tags pulls data from the author }}
+        {{#author}}
+
+            {{#if image}}
+            <figure class="author-image">
+                <a class="img" href="{{url}}" style="background-image: url({{image}})"><span class="hidden">{{name}}'s Picture</span></a>
+            </figure>
             {{/if}}
 
-            {{! Include the mailchimp email sign-up form }}
-            <div style="width:50%;margin-left:25%">
-                <!-- Begin MailChimp Signup Form -->
-                <link href="//cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
-                <style type="text/css">
-                    #mc_embed_signup{clear:left; font:14px Helvetica,Arial,sans-serif; }
-                    /* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
-                       We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
-                </style>
-                <div id="mc_embed_signup">
-                    <form action="//space.us12.list-manage.com/subscribe/post?u=82dccf5bb52057ea8548da9d9&amp;id=11bbfd94f7" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-                        <div id="mc_embed_signup_scroll">
-                            <label for="mce-EMAIL">Receive notifications of new posts and other news</label>
-                            <div style="text-align:center">
-                                <div style="float:left;width:70%;margin-top:10px">
-                                    <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" style="margin:0; width:90%" required>
-                                </div>
-                                <div style="float:left;width:30%;margin-top:10px">
-                                    <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
-                                </div>
-                            </div>
-                            <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-                            <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_82dccf5bb52057ea8548da9d9_11bbfd94f7" tabindex="-1" value=""></div>
+            <section class="author">
+                <h4><a href="{{url}}">{{name}}</a></h4>
 
-                        </div>
-                    </form>
+                {{#if bio}}
+                    <p>{{bio}}</p>
+                {{else}}
+                    <p>Read <a href="{{url}}">more posts</a> by this author.</p>
+                {{/if}}
+                <div class="author-meta">
+                    {{#if location}}<span class="author-location icon-location">{{location}}</span>{{/if}}
+                    {{#if website}}<span class="author-link icon-link"><a href="{{website}}">{{website}}</a></span>{{/if}}
                 </div>
+            </section>
 
-                <!--End mc_embed_signup-->
-            </div>
+        {{/author}}
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text={{encode title}}&amp;url={{url absolute="true"}}"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u={{url absolute="true"}}"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url={{url absolute="true"}}"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
 
         </footer>
 
-        {{/post}}
-
     </article>
-
 </main>
+
+<aside class="read-next">
+    {{#next_post}}
+    <a class="read-next-story {{#if image}}" style="background-image: url({{image}}){{else}}no-cover{{/if}}" href="{{url}}">
+        <section class="post">
+            <h2>{{title}}</h2>
+            <p>{{excerpt words="19"}}&hellip;</p>
+        </section>
+    </a>
+    {{/next_post}}
+    {{#prev_post}}
+    <a class="read-next-story prev {{#if image}}" style="background-image: url({{image}}){{else}}no-cover{{/if}}" href="{{url}}">
+        <section class="post">
+            <h2>{{title}}</h2>
+            <p>{{excerpt words="19"}}&hellip;</p>
+        </section>
+    </a>
+    {{/prev_post}}
+</aside>
+
+{{/post}}

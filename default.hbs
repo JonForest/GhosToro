@@ -10,20 +10,26 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="MobileOptimized" content="320" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    
+
     <link rel="stylesheet" type="text/css" href="{{asset "css/main.css"}}" />
 
     {{#if pagination.next}}<link href="{{page_url pagination.next}}" rel="prefetch" />{{/if}}
 
     {{ghost_head}}
 </head>
-<body class="{{body_class}}">
+<body class="{{body_class}} nav-closed">
 
-    {{> header }}
-
-    <div class="wrapper">
+    {{#is "home"}}
+      {{> header}}
+      <div class="wrapper">
+          {{{body}}}
+      </div>
+    {{else}}
+      {{navigation}}
+      <div class="site-wrapper">
         {{{ body }}}
-    </div>
+      </div>
+    {{/is}}
 
     {{> footer }}
 
